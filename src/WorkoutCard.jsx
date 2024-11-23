@@ -1,4 +1,19 @@
+import { useRef } from "react";
+
 function WorkoutCard({ title, description, time, onComplete }) {
+  let timer = useRef();
+
+  function handleStartWorkout() {
+    timer.current = setTimeout(() => {
+      handleStopWorkout();
+    }, time);
+  }
+
+  function handleStopWorkout() {
+    clearTimeout(timer.current);
+    onComplete();
+  }
+
   return (
     <article className="workout">
       <h3>{title}</h3>
@@ -9,8 +24,8 @@ function WorkoutCard({ title, description, time, onComplete }) {
         {time / 1000 / 60 > 1 ? " minutes" : " minute"}
       </p>
       <p>
-        <button>Start</button>
-        <button onClick={onComplete}>Stop</button>
+        <button onClick={handleStartWorkout}>Start</button>
+        <button onClick={handleStopWorkout}>Stop</button>
       </p>
     </article>
   );
